@@ -76,14 +76,15 @@ Vercel cannot keep a writable `shop.db` file on disk the way your laptop does. C
 1. Push this repo to GitHub (include `data/shop.db` only if your course allows — otherwise rely on Turso as the source of truth after import).
 2. [vercel.com](https://vercel.com) → **Add New Project** → import the repo.
 3. Set **Root Directory** to **`web`** (required). If this is empty or `.`, Vercel uses the **repository root**, sees the jobs `requirements.txt`, and tries to deploy a Python app → **“No python entrypoint”** error. Python packages for **`/api/inference`** live in **`web/api/requirements.txt`** so the main framework stays **Next.js**.
-4. **Environment variables** (Production + Preview):
+4. Under the same **Build and Deployment** page, set **Framework Preset** to **Next.js** (not **Python**). If it says Python, Vercel runs `pip install -r requirements.txt` and looks for `main.py` / `app.py` → the same **“No python entrypoint”** error. The **`/api/inference`** route is still deployed as a Python Function automatically.
+5. **Environment variables** (Production + Preview):
 
    | Name | Value |
    |------|--------|
    | `TURSO_DATABASE_URL` | `libsql://...` from Turso |
    | `TURSO_AUTH_TOKEN` | token string |
 
-5. Deploy. After the first deploy, run **Redeploy** if you add env vars.
+6. Deploy. After the first deploy, run **Redeploy** if you add env vars.
 
 ### 3. Model file on Vercel
 
@@ -151,7 +152,7 @@ Submit the **`.ipynb`** file as instructed.
 | Issue | Fix |
 |--------|-----|
 | `Database not found` | Ensure `data/shop.db` exists; or set `SHOP_DB_PATH` in `web/.env.local`. |
-| `No python entrypoint` on Vercel | Set project **Root Directory** to **`web`**. Do not deploy from repo root. |
+| `No python entrypoint` on Vercel | Set **Root Directory** to **`web`** and **Framework Preset** to **Next.js** (not Python). |
 | Priority queue empty | Only **unshipped** orders appear. Place a **new** order (no shipment row), then **Run Scoring**. |
 | Scoring API 500 | Run `python jobs/run_inference.py` manually from repo root; fix any error shown. Train the model first. |
 | `order_predictions` missing | Inference creates the table automatically on first successful run. |
