@@ -75,7 +75,7 @@ Vercel cannot keep a writable `shop.db` file on disk the way your laptop does. C
 
 1. Push this repo to GitHub (include `data/shop.db` only if your course allows — otherwise rely on Turso as the source of truth after import).
 2. [vercel.com](https://vercel.com) → **Add New Project** → import the repo.
-3. Set **Root Directory** to **`web`**.
+3. Set **Root Directory** to **`web`** (required). If this is empty or `.`, Vercel uses the **repository root**, sees the jobs `requirements.txt`, and tries to deploy a Python app → **“No python entrypoint”** error. Python packages for **`/api/inference`** live in **`web/api/requirements.txt`** so the main framework stays **Next.js**.
 4. **Environment variables** (Production + Preview):
 
    | Name | Value |
@@ -151,6 +151,7 @@ Submit the **`.ipynb`** file as instructed.
 | Issue | Fix |
 |--------|-----|
 | `Database not found` | Ensure `data/shop.db` exists; or set `SHOP_DB_PATH` in `web/.env.local`. |
+| `No python entrypoint` on Vercel | Set project **Root Directory** to **`web`**. Do not deploy from repo root. |
 | Priority queue empty | Only **unshipped** orders appear. Place a **new** order (no shipment row), then **Run Scoring**. |
 | Scoring API 500 | Run `python jobs/run_inference.py` manually from repo root; fix any error shown. Train the model first. |
 | `order_predictions` missing | Inference creates the table automatically on first successful run. |
