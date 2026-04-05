@@ -1,0 +1,8 @@
+{
+  "functions": {
+    "api/inference.py": {
+      "maxDuration": 60,
+      "memory": 3008
+    }
+  }
+}

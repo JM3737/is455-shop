@@ -1,0 +1,13 @@
+node_modules/
+.next/
+out/
+*.pyc
+__pycache__/
+.ipynb_checkpoints/
+.env
+.env.local
+web/.env.local
+artifacts/*.sav
+artifacts/*.json
+!artifacts/.gitkeep
+data/warehouse.db
